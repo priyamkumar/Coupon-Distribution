@@ -15,9 +15,7 @@ const getCoupon = async (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      couponId: availableCoupon._id,
-      code: availableCoupon.code,
-      info: availableCoupon.description,
+      coupon: availableCoupon,
     });
   } catch (err) {
     console.error("Unable to fetch available coupon!", err);
