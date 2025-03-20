@@ -19,7 +19,7 @@ const isAuthenticated = async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId);
+    const user = await User.findById(decoded.id);
 
     if (!user) {
       return res.status(401).json({
@@ -33,7 +33,7 @@ const isAuthenticated = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.error("Auth middleware error:", error);
+    console.error("Auth middleware error:", err);
     return res.status(401).json({
       success: false,
       message: "Not authorized to access this route",

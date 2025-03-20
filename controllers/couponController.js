@@ -77,7 +77,7 @@ const claimCoupon = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error("Error claiming coupon: ", error);
+    console.error("Error claiming coupon: ", err);
     return res.status(500).json({
       success: false,
       message: "Server is unable to process your request.",
@@ -106,6 +106,7 @@ const getAllCoupons = async (req, res) => {
 const addCoupon = async (req, res) => {
   try {
     const { code, description, isActive } = req.body;
+    const existingCoupon = await Coupon.findOne({ code });
     if (existingCoupon) {
       return res.status(400).json({
         success: false,
@@ -125,6 +126,7 @@ const addCoupon = async (req, res) => {
       data: newCoupon,
     });
   } catch (err) {
+    console.error(err)
     return res.status(500).json({
       success: false,
       message: "Server error while adding coupon.",
@@ -202,7 +204,7 @@ const getClaimHistory = async (req, res) => {
       data: claims,
     });
   } catch (err) {
-    console.error("Error fetching claim history:", error);
+    console.error("Error fetching claim history:", err);
     return res.status(500).json({
       success: false,
       message: "Server error while fetching claim history.",

@@ -8,7 +8,7 @@ const {
   deleteCoupon,
   getClaimHistory,
 } = require("../controllers/couponController");
-const { isAuthenticated } = require("../middlewares/auth");
+const { isAuthenticated, authorizeRoles } = require("../middlewares/auth");
 const { sessionTracker } = require("../middlewares/sessionTracker");
 
 const router = express.Router();
@@ -18,10 +18,10 @@ router.get("/next", sessionTracker, getCoupon);
 router.post("/claim", sessionTracker, claimCoupon);
 
 //admin
-router.get("/", isAuthenticated, getAllCoupons);
-router.post("/", isAuthenticated, addCoupon);
-router.put("/:id", isAuthenticated, updateCoupon);
-router.delete("/:id", isAuthenticated, deleteCoupon);
-router.get("/claims", isAuthenticated, getClaimHistory);
+router.get("/", isAuthenticated, authorizeRoles("admin"), getAllCoupons);
+router.post("/", isAuthenticated, authorizeRoles("admin"), addCoupon);
+router.put("/:id", isAuthenticated, authorizeRoles("admin"), updateCoupon);
+router.delete("/:id", isAuthenticated, authorizeRoles("admin"), deleteCoupon);
+router.get("/claims", isAuthenticated, authorizeRoles("admin"), getClaimHistory);
 
 module.exports = router;
