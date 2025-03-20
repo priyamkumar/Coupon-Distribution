@@ -8,8 +8,7 @@ const sessionTracker = (req, res, next) => {
     res.cookie("sessionId", sessionId, {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
-      secure: true,
+      sameSite: "lax",
     });
   }
   req.sessionId = sessionId;
